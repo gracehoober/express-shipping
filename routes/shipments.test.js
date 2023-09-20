@@ -19,6 +19,13 @@ describe("POST /", function () {
   test("throws error if empty request body", async function () {
     const resp = await request(app)
       .post("/shipments")
+      .send({});
+    expect(resp.statusCode).toEqual(400);
+  });
+
+  test("throws error if no request body", async function () {
+    const resp = await request(app)
+      .post("/shipments")
       .send();
     expect(resp.statusCode).toEqual(400);
   });
@@ -31,12 +38,13 @@ describe("POST /", function () {
       shenanigans: "blah"
     });
     expect(resp.statusCode).toEqual(400);
-    expect(resp.error.message).toEqual(
+    console.log(resp.body.error);
+    expect(resp.body.error.message).toEqual(
     [
       "instance.productId must be greater than or equal to 1000",
       "instance.zip is not of a type(s) string",
       "instance is not allowed to have the additional property \"shenanigans\"",
-      "instance requires property \"addr\""
+      "instance requires property \"name\""
     ]);
   });
 
