@@ -21,8 +21,14 @@ router.post("/", async function (req, res, next) {
   const validateBody = jsonschema.validate(
     req.body, orderSchema, {require: true});
 
+    // if (req.body === undefined) {
+    //   throw new BadRequestError();
+    // }
+    console.log("ENTERING VALIDATION");
   if(!validateBody.valid){
     const errors = validateBody.errors.map(error => error.stack);
+    console.log("We Have Errors");
+    console.log(errors);
     throw new BadRequestError(errors);
   }
 
